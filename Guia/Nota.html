@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi primer programa en JavaScript</title>
+</head>
+<body>
+  <h1>Promedio de competencias</h1>
+  <pre id="resultado"></pre>
+
+  <script>
+    // Función para pedir una nota válida (entre 1.0 y 5.0)
+    function pedirNota(competencia, numero) {
+      let nota;
+      do {
+        nota = parseFloat(prompt("Competencia " + competencia + " - Nota " + numero + " (1.0 a 5.0):"));
+        if (isNaN(nota) || nota < 1.0 || nota > 5.0) {
+          alert("Nota inválida. Debe estar entre 1.0 y 5.0");
+        }
+      } while (isNaN(nota) || nota < 1.0 || nota > 5.0);
+      return nota;
+    }
+
+    // 1. Datos del estudiante
+    let nombre = prompt("Ingrese su nombre:");
+    let edad = parseInt(prompt("Ingrese su edad:"));
+    let trimestre = prompt("Ingrese el trimestre:");
+
+    // 2. Competencias
+    let competencia1 = prompt("Ingrese el nombre de la competencia 1:");
+    let competencia2 = prompt("Ingrese el nombre de la competencia 2:");
+
+    // 3. Notas de la competencia 1
+    let c1n1 = pedirNota(competencia1, 1);
+    let c1n2 = pedirNota(competencia1, 2);
+    let c1n3 = pedirNota(competencia1, 3);
+
+    // 4. Notas de la competencia 2
+    let c2n1 = pedirNota(competencia2, 1);
+    let c2n2 = pedirNota(competencia2, 2);
+    let c2n3 = pedirNota(competencia2, 3);
+
+    // 5. Promedio por competencia
+    let promedio1 = (c1n1 + c1n2 + c1n3) / 3;
+    let promedio2 = (c2n1 + c2n2 + c2n3) / 3;
+
+    // 6. Promedio del trimestre
+    let promedioTrimestre = (promedio1 + promedio2) / 2;
+
+    // 7. Resultados
+    let estado1 = promedio1 >= 3.5 ? "APROBÓ" : "NO APROBÓ";
+    let estado2 = promedio2 >= 3.5 ? "APROBÓ" : "NO APROBÓ";
+    let estadoTrimestre = promedioTrimestre >= 3.5 ? "APROBÓ" : "NO APROBÓ";
+
+    let salida = "";
+    salida += "Nombre: " + nombre + "\n";
+    salida += "Edad: " + edad + "\n";
+    salida += "Trimestre: " + trimestre + "\n\n";
+    salida += "Competencia 1: " + competencia1 + "\n";
+    salida += "  Promedio: " + promedio1.toFixed(2) + " -> " + estado1 + "\n\n";
+    salida += "Competencia 2: " + competencia2 + "\n";
+    salida += "  Promedio: " + promedio2.toFixed(2) + " -> " + estado2 + "\n\n";
+    salida += "Promedio del trimestre: " + promedioTrimestre.toFixed(2) + "\n";
+    salida += "Resultado del trimestre: " + estadoTrimestre;
+
+    document.getElementById("resultado").textContent = salida;
+  </script>
+</body>
+</html>
