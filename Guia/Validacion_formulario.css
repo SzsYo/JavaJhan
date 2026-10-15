@@ -1,0 +1,15 @@
+    body { font-family: Arial, sans-serif; background: #f2f4f8; display: flex; justify-content: center; padding: 30px; }
+    form { background: #fff; padding: 25px 30px; border-radius: 8px; width: 360px; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+    h2 { text-align: center; margin-top: 0; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    input[type="text"], input[type="number"], input[type="password"], input[type="email"] {
+      width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box;
+      border: 1px solid #aaa; border-radius: 4px;
+    }
+    select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; border: 1px solid #aaa; border-radius: 4px; background: #fff; }
+    select.invalido { border-color: #c0392b; }
+    .radios label { display: inline; font-weight: normal; margin-right: 15px; }
+    .error { color: #c0392b; font-size: 13px; min-height: 16px; }
+    input.invalido { border-color: #c0392b; }
+    button { margin-top: 18px; width: 100%; padding: 10px; background: #2d7ff9; color: #fff; border: 0; border-radius: 4px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #1c63c9; }

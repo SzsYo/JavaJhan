@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulario de registro</title>
+<link rel="stylesheet" href="Validacion_formulario.css">
+</head>
+<body>
+  <form id="formulario" novalidate>
+    <h2>Registro</h2>
+
+    <label for="nombre">Nombre</label>
+    <input type="text" id="nombre" placeholder="Entre 6 y 15 caracteres">
+    <div class="error" id="error-nombre"></div>
+
+    <label for="apellido">Apellido</label>
+    <input type="text" id="apellido" placeholder="Entre 6 y 15 caracteres">
+    <div class="error" id="error-apellido"></div>
+
+    <label for="identidad">Número de identidad</label>
+    <input type="text" id="identidad" placeholder="Solo números, entre 6 y 10 dígitos">
+    <div class="error" id="error-identidad"></div>
+
+    <label for="edad">Edad</label>
+    <input type="number" id="edad" placeholder="Entre 18 y 50">
+    <div class="error" id="error-edad"></div>
+
+    <label for="email">Email</label>
+    <input type="text" id="email" placeholder="usuario123@dominio.com">
+    <div class="error" id="error-email"></div>
+
+    <label for="direccion">Dirección</label>
+    <input type="text" id="direccion" placeholder="Ej: Calle 50 # 20-30">
+    <div class="error" id="error-direccion"></div>
+
+    <label for="sangre">Tipo de sangre</label>
+    <select id="sangre">
+      <option value="">-- Seleccione --</option>
+      <option value="A+">A+</option>
+      <option value="A-">A-</option>
+      <option value="B+">B+</option>
+      <option value="B-">B-</option>
+      <option value="AB+">AB+</option>
+      <option value="AB-">AB-</option>
+      <option value="O+">O+</option>
+      <option value="O-">O-</option>
+    </select>
+    <div class="error" id="error-sangre"></div>
+
+    <label>Sexo</label>
+    <div class="radios">
+      <input type="radio" name="sexo" id="masculino" value="Masculino">
+      <label for="masculino">Masculino</label>
+      <input type="radio" name="sexo" id="femenino" value="Femenino">
+      <label for="femenino">Femenino</label>
+    </div>
+    <div class="error" id="error-sexo"></div>
+
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" placeholder="Mínimo 10 caracteres alfanuméricos">
+    <div class="error" id="error-password"></div>
+
+    <label for="confirmar">Confirmar contraseña</label>
+    <input type="password" id="confirmar">
+    <div class="error" id="error-confirmar"></div>
+
+    <button type="submit">Registrarse</button>
+  </form>
+
+  <script>
+    const formulario = document.getElementById("formulario");
+
+    // Muestra u oculta el mensaje de error de un campo
+    function mostrarError(id, mensaje) {
+      document.getElementById("error-" + id).textContent = mensaje;
+      const campo = document.getElementById(id);
+      if (campo) campo.classList.toggle("invalido", mensaje !== "");
+    }
+
+    // Cada función devuelve "" si es válido, o el mensaje de error
+    function validarTexto(valor, nombreCampo) {
+      valor = valor.trim();
+      if (valor === "") return "El " + nombreCampo + " es obligatorio.";
+      if (valor.length < 6 || valor.length > 15)
+        return "El " + nombreCampo + " debe tener entre 6 y 15 caracteres.";
+      return "";
+    }
+
+    function validarEdad(valor) {
+      if (valor === "") return "La edad es obligatoria.";
+      const edad = Number(valor);
+      if (isNaN(edad) || edad < 18 || edad > 50)
+        return "La edad debe estar entre 18 y 50.";
+      return "";
+    }
+
+    function validarIdentidad(valor) {
+      valor = valor.trim();
+      if (valor === "") return "El número de identidad es obligatorio.";
+      if (!/^[0-9]+$/.test(valor)) return "Solo se permiten números.";
+      if (valor.length < 6 || valor.length > 10)
+        return "El número de identidad debe tener entre 6 y 10 dígitos.";
+      return "";
+    }
+
+    function validarDireccion(valor) {
+      valor = valor.trim();
+      if (valor === "") return "La dirección es obligatoria.";
+      if (valor.length < 8 || valor.length > 50)
+        return "La dirección debe tener entre 8 y 50 caracteres.";
+      if (!/^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s#\-.,°]+$/.test(valor))
+        return "La dirección contiene caracteres no permitidos.";
+      if (!/[0-9]/.test(valor) || !/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(valor))
+        return "Ingrese una dirección válida (letras y números).";
+      return "";
+    }
+
+    function validarSangre(valor) {
+      const permitidos = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+      if (valor === "") return "Seleccione un tipo de sangre.";
+      if (!permitidos.includes(valor)) return "Tipo de sangre no válido.";
+      return "";
+    }
+
+    function validarEmail(valor) {
+      valor = valor.trim();
+      if (valor === "") return "El email es obligatorio.";
+      // Parte local alfanumérica (se permiten . _ -) + @ + dominio con punto
+      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$/;
+      if (!regex.test(valor)) return "Ingrese un email válido con dominio (ej: usuario1@correo.com).";
+      return "";
+    }
+
+    function validarSexo() {
+      return document.querySelector('input[name="sexo"]:checked')
+        ? "" : "Seleccione una opción.";
+    }
+
+    function validarPassword(valor) {
+      if (valor === "") return "La contraseña es obligatoria.";
+      if (valor.length < 10) return "La contraseña debe tener mínimo 10 caracteres.";
+      if (!/^[a-zA-Z0-9]+$/.test(valor)) return "Solo se permiten letras y números.";
+      if (!/[a-zA-Z]/.test(valor) || !/[0-9]/.test(valor))
+        return "Debe contener letras y números.";
+      return "";
+    }
+
+    function validarConfirmar(confirmar, password) {
+      if (confirmar === "") return "Debe confirmar la contraseña.";
+      if (confirmar !== password) return "Las contraseñas no coinciden.";
+      return "";
+    }
+
+    formulario.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const errores = {
+        nombre:    validarTexto(document.getElementById("nombre").value, "nombre"),
+        apellido:  validarTexto(document.getElementById("apellido").value, "apellido"),
+        identidad: validarIdentidad(document.getElementById("identidad").value),
+        edad:      validarEdad(document.getElementById("edad").value),
+        email:     validarEmail(document.getElementById("email").value),
+        direccion: validarDireccion(document.getElementById("direccion").value),
+        sangre:    validarSangre(document.getElementById("sangre").value),
+        sexo:      validarSexo(),
+        password:  validarPassword(document.getElementById("password").value),
+        confirmar: validarConfirmar(
+                     document.getElementById("confirmar").value,
+                     document.getElementById("password").value)
+      };
+
+      let valido = true;
+      for (const campo in errores) {
+        mostrarError(campo, errores[campo]);
+        if (errores[campo] !== "") valido = false;
+      }
+
+      if (valido) {
+        alert("Registro con éxito");   // La alerta incluye el botón "Aceptar"
+        formulario.reset();
+      }
+    });
+  </script>
+</body>
+</html>
